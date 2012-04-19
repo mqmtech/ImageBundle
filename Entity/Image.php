@@ -8,10 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- *
  * @ORM\Table(name="shop_image")
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  */
 class Image extends FileAsset implements ImageInterface
 {
@@ -79,7 +77,7 @@ class Image extends FileAsset implements ImageInterface
     }
     
     /**
-     * @return {@inheritDoc}
+     * @return integer
      */
     public function getWidth()
     {
@@ -93,7 +91,7 @@ class Image extends FileAsset implements ImageInterface
     }
     
     /**
-     * @return {@inheritDoc}
+     * @return integer
      */
     public function getHeight()
     {
@@ -107,7 +105,7 @@ class Image extends FileAsset implements ImageInterface
     }
     
     /**
-     * @return {@inheritDoc}
+     * @return array
      */
     public function getImageSize($maxWidth=null, $maxHeight=null)
     {
@@ -151,70 +149,5 @@ class Image extends FileAsset implements ImageInterface
             'hPadding' => $hPadding,
             'vPadding' => $vPadding,
         );
-    }
-    
-    /**
-     * @ORM\PostPersist()
-     * @ORM\PostUpdate()
-     */
-    public function upload()
-    {
-        // the file property can be empty if the field is not required
-        if (null === $this->data) {
-            return;
-        }
-
-        // you must throw an exception here if the file cannot be moved
-        // so that the entity is not persisted to the database
-        // which the UploadedFile move() method does
-        $this->data->move($this->getAssetRootDir(), $this->getName());
-        unset($this->data);
-    }
-    
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUpdate()
-    {
-        $this->modifiedAt = new \DateTime();
-        if (null != $this->data) {
-            $this->setName(uniqid().'.jpg');//.$this->data->guessExtension());
-        }
-        if ($this->getName() == null) {
-            $this->setName($this->getName());
-        }
-    }
-    
-     /**
-     * Set the absolute path in the non-persistent variable file to be used in the postRemove if the remove is succesful
-     * 
-     * @ORM\PreRemove()
-     */
-    public function preRemove()
-    {
-        $name = $this->getName();        
-        if ($name != null) {
-            $this->data = $this->getAbsolutePath();
-        }
-    }
-    
-     /**
-     * Deletes the file from the system completely
-     * Reads the file variable which must have temporally the absolute path of the path setted in the PreRemove listener
-     *
-     * @ORM\PostRemove()
-     */
-    public function postRemove()
-    {
-        $absolutePath = $this->getData();        
-        if ($absolutePath != null) {
-            try {
-                unlink($absolutePath);
-            }
-            catch (\Exception $e) {
-                
-            }
-        }
     }
 }
