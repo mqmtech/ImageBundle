@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="mqm_image.image_manager.class">MQM\ImageBundle\Entity\ImageManager</parameter>
+        <parameter key="mqm_image.model.image.class">MQM\ImageBundle\Entity\Image</parameter>
+        <parameter key="mqm_image.image_factory.class">MQM\ImageBundle\Entity\ImageFactory</parameter>
+    </parameters>
+
+    <services>
+        <service id="mqm_image.image_manager" class="%mqm_image.image_manager.class%" public="true">
+            <argument type="service" id="mqm_image.entity_manager" />
+            <argument type="service" id="mqm_image.image_factory" />
+        </service>
+        
+        <service id="mqm_image.image_factory" class="%mqm_image.image_factory.class%" public="true">
+        <argument>%mqm_image.model.image.class%</argument>
+        </service>
+        
+        <service id="mqm_image.entity_manager" factory-service="doctrine" factory-method="getEntityManager" class="Doctrine\ORM\EntityManager" public="false">
+        </service>        
+    </services>
+    
+</container>
