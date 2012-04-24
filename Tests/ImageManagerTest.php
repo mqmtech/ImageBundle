@@ -2,9 +2,9 @@
 
 namespace MQM\ImageBundle\Test\Image;
 
-use MQM\ImageBundle\Image\ImageInterface;
+
 use MQM\ImageBundle\Model\ImageManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Tests\Functional\AppKernel;
+
 
 class ImageManagerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 {   

@@ -5,7 +5,7 @@ namespace MQM\ImageBundle\Entity;
 use MQM\AssetBundle\Entity\FileAsset;
 use MQM\ImageBundle\Model\ImageInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Table(name="shop_image")
