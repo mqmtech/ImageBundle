@@ -6,7 +6,6 @@ use MQM\AssetBundle\Entity\FileAsset;
 use MQM\ImageBundle\Model\ImageInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Table(name="shop_image")
  * @ORM\Entity
@@ -15,8 +14,7 @@ class Image extends FileAsset implements ImageInterface
 {
     public function __construct()
     {
-        parent::__construct();
-        
+        parent::__construct();        
         $this->setType('image/jpeg');
     }
     
@@ -37,7 +35,8 @@ class Image extends FileAsset implements ImageInterface
     {   
         if ($this->getName() == null) {
             $name = 'image_nd.jpg';
-             return $this->getAlternativeRootDir() . '/' . $name;
+            
+            return $this->getAlternativeRootDir() . '/' . $name;
         }
         else{
             return null === $this->getName() ? null : $this->getAssetRootDir() . '/' . $this->getName();
@@ -64,7 +63,7 @@ class Image extends FileAsset implements ImageInterface
      */
     protected function getAlternativeRootDir()
     {        
-        return __DIR__ . '/../../../../../web/' . $this->getAlternativeDir();
+        return __DIR__ . '/../../../../web/' . $this->getAlternativeDir();
     }
     
     /**
@@ -110,7 +109,7 @@ class Image extends FileAsset implements ImageInterface
     public function getImageSize($maxWidth=null, $maxHeight=null)
     {
         $path = $this->getAbsolutePath();
-        try{
+        try {
             list($width, $height, $type, $attr) = getimagesize($path);
         }
         catch (\Exception $e) {
@@ -120,8 +119,7 @@ class Image extends FileAsset implements ImageInterface
             'hPadding' => self::DEF_H_PADDING,
             'vPadding' => self::DEF_V_PADDING,
             );
-        }
-        
+        }        
         $width += 0.0;
         $height += 0.0;
         $newWidth = $width + 0.0;
