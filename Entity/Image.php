@@ -17,32 +17,22 @@ class Image extends FileAsset implements ImageInterface
         parent::__construct();        
         $this->setType('image/jpeg');
     }
-    
-    function __clone()
-    {
-        $path = uniqid().'.jpg';//.$this->data->guessExtension());
-        copy($this->getAbsolutePath(), $this->getAssetRootDir() . '/' . $path);
-        $this->setName($path);
-        if ($this->getName() == null) {
-            $this->setName($this->getName());
-        }
-    }
-    
+
     /**
      * @return {@inheritDoc}
      */
     public function getAbsolutePath()
-    {   
-        if ($this->getName() == null) {
+    {
+        $path = parent::getAbsolutePath();
+        if ($path == null) {
             $name = 'image_nd.jpg';
-            
+
             return $this->getAlternativeRootDir() . '/' . $name;
         }
-        else{
-            return null === $this->getName() ? null : $this->getAssetRootDir() . '/' . $this->getName();
-        }
+
+        return $path;
     }
-    
+
     /**
      * @return {@inheritDoc}
      */
